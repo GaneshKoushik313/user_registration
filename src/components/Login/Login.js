@@ -4,6 +4,8 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 // import Link from '@material-ui/core/Link';
@@ -16,6 +18,8 @@ import Container from '@material-ui/core/Container';
 import ReactFormValidation from "react-form-input-validation";
 import { Link, useHistory } from "react-router-dom";
 import {useForm} from "react-hook-form";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -46,6 +50,9 @@ export default function Login(){
         email: "",
         password: ""
     })
+    const [show_password, setShowPassword] = useState(false);
+    const handleClickShowPassword = () => setShowPassword(!show_password);
+    const handleMouseDownPassword = () => setShowPassword(!show_password);
     const { register, handleSubmit, errors } = useForm();
     const onSubmit = (data, e) => {
         e.preventDefault();
@@ -75,8 +82,17 @@ export default function Login(){
                             }
                         })}
                     /> 
-                    <TextField value={user.password} onChange={e => setUser({...user,password:e.target.value})} variant="outlined" margin="normal" required fullWidth name="password" label="Password" type="password" id="password" autoComplete="current-password" error={Boolean(errors.password)} helperText={errors.password?.message}
+                    <TextField value={user.password} onChange={e => setUser({...user,password:e.target.value})} variant="outlined" margin="normal" required fullWidth name="password" label="Password" type={show_password?"text":"password"} id="password" autoComplete="current-password" error={Boolean(errors.password)} helperText={errors.password?.message}
                         inputRef={register({required: "Password is Required"})}
+                        InputProps={{ 
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <IconButton aria-label="toggle password visibility" onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword}>
+                                  {show_password ? <Visibility /> : <VisibilityOff />}
+                                </IconButton>
+                              </InputAdornment>
+                            )
+                        }}
                     />
                     <Button type="submit" variant="contained" color="primary" style={{margin: '26px auto', display: "flex"}} className="mb-4" className={classes.submit}>Sign In</Button>
                     <Grid container className="mt-2">

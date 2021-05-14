@@ -4,6 +4,8 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
@@ -16,6 +18,8 @@ import Container from '@material-ui/core/Container';
 import ReactFormValidation from "react-form-input-validation";
 import { Link, useHistory } from "react-router-dom";
 import {useForm} from "react-hook-form";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -49,20 +53,29 @@ export default function Register(){
         password: "",
         confirm_password: ""
     })
+    const [show_password,setShowPassword] = useState(false)
+    const handleClickShowPassword = () => setShowPassword(!show_password);
+    const handleMouseDownPassword = () => setShowPassword(!show_password);
     const { register, handleSubmit, reset, errors } = useForm();
     const onSubmit = (data, e) => {
-        e.preventDefault();
-        console.log(data);
+    };
+    const resetForm = () => {
+        user.full_name = ""
+        user.email = ""
+        user.phone_no = ""
+        user.email = ""
+        user.password = ""
+        user.confirm_password = ""
+        reset()
     };
     useEffect( () =>{
-        console.log("Load")
     })   
     return (
         <Container className="register-card" component="main" maxWidth="sm">
             <CssBaseline />
             <div className={classes.paper}>
                 <Avatar className={classes.avatar}>
-                    <AccountCircleOutlinedIcon color="/" />
+                    <AccountCircleOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
                     Sign Up
@@ -87,26 +100,66 @@ export default function Register(){
                     </div>
                     <div className="row">
                         <div className="col-lg-6 col-md-6 col-sm-12">
-                            <TextField value={user.phone_no} onChange={e => setUser({...user,phone_no:e.target.value})} variant="outlined" margin="normal" required fullWidth name="phone_no" label="Phone Number" type="text" id="phone_no" autoComplete="phone_no" error={Boolean(errors.phone_no)} helperText={errors.phone_no?.message}
-                                inputRef={register({required: "Phone Number is Required"})}
+                            <TextField value={user.phone_no} onChange={e => setUser({...user,phone_no:e.target.value})} variant="outlined" margin="normal" required fullWidth name="phone_no" label="Phone Number" type="phone" id="phone_no" autoComplete="phone_no" error={Boolean(errors.phone_no)} helperText={errors.phone_no?.message}
+                                inputRef={register({required: "Phone Number is Required",
+                                    pattern: {
+                                        value: /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}/,
+                                        message: 'Please Enter Valid Phone Number',
+                                    },
+                                    minLength: {
+                                        value: 10,
+                                        message: 'Phone Number Must Contain Minimum 10 Numbers',
+                                    },
+                                    maxLength: {
+                                        value: 15,
+                                        message: 'Phone Number Must Contain Maximum 15 Numbers',
+                                    }
+                                })}
+                                inputProps={{ maxLength: 15 }}
                             />  
                         </div>
                         <div className="col-lg-6 col-md-6 col-sm-12">
-                            <TextField value={user.password} onChange={e => setUser({...user,password:e.target.value})} variant="outlined" margin="normal" required fullWidth name="password" label="Password" type="password" id="password" autoComplete="current-password" error={Boolean(errors.password)} helperText={errors.password?.message}
-                                inputRef={register({required: "Password is Required"})}
+                            <TextField value={user.password} onChange={e => setUser({...user,password:e.target.value})} variant="outlined" margin="normal" required fullWidth name="password" label="Password" type={show_password?"text":"password"} id="password" autoComplete="current-password" error={Boolean(errors.password)} helperText={errors.password?.message}
+                                inputRef={register({required: "Password is Required",
+                                    minLength: {
+                                        value: 8,
+                                        message: 'Password Must Contain Minimum 8 Characters',
+                                    }
+                                })}
+                                InputProps={{ 
+                                    endAdornment: (
+                                      <InputAdornment position="end">
+                                        <IconButton aria-label="toggle password visibility" onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword}>
+                                          {show_password ? <Visibility /> : <VisibilityOff />}
+                                        </IconButton>
+                                      </InputAdornment>
+                                    )
+                                }}
                             /> 
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-lg-6 col-md-6 col-sm-12">
-                            <TextField value={user.confirm_password} onChange={e => setUser({...user,confirm_password:e.target.value})} variant="outlined" margin="normal" required fullWidth name="confirm_password" label="Confirm Password" type="password" id="confirm_password" autoComplete="confirm_password" error={Boolean(errors.confirm_password)} helperText={errors.confirm_password?.message}
+                            <TextField value={user.confirm_password} onChange={e => setUser({...user,confirm_password:e.target.value})} variant="outlined" margin="normal" required fullWidth name="confirm_password" label="Confirm Password" type={show_password?"text":"password"} id="confirm_password" autoComplete="confirm_password" error={Boolean(errors.confirm_password)} helperText={errors.confirm_password?.message}
                                 inputRef={register({required: "Confirm Password is Required"})}
+                                InputProps={{ 
+                                    endAdornment: (
+                                      <InputAdornment position="end">
+                                        <IconButton aria-label="toggle password visibility" onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword}>
+                                          {show_password ? <Visibility /> : <VisibilityOff />}
+                                        </IconButton>
+                                      </InputAdornment>
+                                    )
+                                }}
                             />
+                        </div>
+                        <div className="col-lg-6 col-md-6 col-sm-12 justify-content-center d-flex align-items-center">   
+                            <span className="text-danger mt-2 d-block">{user.confirm_password ? user.password != user.confirm_password ? "Passwords Not Matching": "":""}</span>
                         </div>
                     </div>
                     <div style={{margin: '0 auto', display: "flex"}} className="mb-1 justify-content-center">
-                        <Button type="submit" variant="contained" color="primary" className={classes.submit}>Sign Up</Button>
-                        {/* <Button type="submit" variant="contained" color="secondary" style={{marginleft: '1rem'}} className={classes.submit}>Reset</Button> */}
+                        <Button disabled={ user.password != user.confirm_password && user.confirm_password} type="submit" variant="contained" color="primary" className={classes.submit}>Sign Up</Button>
+                        <Button type="submit" variant="contained" color="secondary" className="reset-btn" onClick={resetForm}>Reset</Button>
                     </div>
                     <Grid container>
                         {/* <Grid item xs>
@@ -119,7 +172,7 @@ export default function Register(){
                                 {"Already have an account? Sign In"}
                             </Link>
                         </Grid>
-                    </Grid>
+                    </Grid>   
                 </form>
             </div>
         </Container>

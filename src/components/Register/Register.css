@@ -5,3 +5,8 @@
     background: snow;
     margin-top: 7rem;
 }
+.reset-btn{
+    margin-left: 6px !important;
+    height: 36px;
+    margin-top: 24px !important;
+}
