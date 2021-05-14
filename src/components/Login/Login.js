@@ -56,7 +56,6 @@ export default function Login(){
     const { register, handleSubmit, errors } = useForm();
     const onSubmit = (data, e) => {
         e.preventDefault();
-        console.log(data);
     };
 
     useEffect( () =>{
