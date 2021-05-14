@@ -7,14 +7,14 @@ import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
-import Link from '@material-ui/core/Link';
+// import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import ReactFormValidation from "react-form-input-validation";
-import { routeLink, useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import {useForm} from "react-hook-form";
 
 const useStyles = makeStyles((theme) => ({
@@ -62,7 +62,7 @@ export default function Register(){
             <CssBaseline />
             <div className={classes.paper}>
                 <Avatar className={classes.avatar}>
-                    <AccountCircleOutlinedIcon />
+                    <AccountCircleOutlinedIcon color="/" />
                 </Avatar>
                 <Typography component="h1" variant="h5">
                     Sign Up
@@ -115,7 +115,7 @@ export default function Register(){
                             </Link>
                         </Grid> */}
                         <Grid item style={{margin: '0px auto', display: "flex"}}>
-                            <Link href="/" variant="body2">
+                            <Link to="/" className="text-material-color" variant="body2">
                                 {"Already have an account? Sign In"}
                             </Link>
                         </Grid>
