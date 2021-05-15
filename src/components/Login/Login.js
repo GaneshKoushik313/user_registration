@@ -70,7 +70,7 @@ export default function Login(){
         try {
             const {data} = await axios({
                 method: 'post', //you can set what request you want to be
-                url: `https://react-auth-3d77f.web.app/auth/users/login`,
+                url: `http://localhost:5000/auth/users/login`,
                 data: user,
                 headers: {
                     'Content-Type': 'application/json'
