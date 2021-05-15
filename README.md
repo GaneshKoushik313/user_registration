@@ -1,2 +1,2 @@
 # user_registration
-User Registration using React JS and NodeJS
+User Registration using React JS,NodeJS,MongoDB and Firebase
