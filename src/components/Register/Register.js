@@ -88,18 +88,6 @@ export default function Register(){
                             />   
                         </div>
                         <div className="col-lg-6 col-md-6 col-sm-12">
-                            <TextField id="email" variant="outlined" label="Email address" type="email" name="email" autoComplete="email" margin="normal" required fullWidth error={Boolean(errors.email)} helperText={errors.email?.message}
-                                inputRef={register({required: "Email Address is Required",
-                                    pattern: {
-                                        value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                                        message: 'Please Enter Valid Email Address',
-                                    }
-                                })}
-                            /> 
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-lg-6 col-md-6 col-sm-12">
                             <TextField value={user.phone_no} onChange={e => setUser({...user,phone_no:e.target.value})} variant="outlined" margin="normal" required fullWidth name="phone_no" label="Phone Number" type="phone" id="phone_no" autoComplete="phone_no" error={Boolean(errors.phone_no)} helperText={errors.phone_no?.message}
                                 inputRef={register({required: "Phone Number is Required",
                                     pattern: {
@@ -118,6 +106,8 @@ export default function Register(){
                                 inputProps={{ maxLength: 15 }}
                             />  
                         </div>
+                    </div>
+                    <div className="row">
                         <div className="col-lg-6 col-md-6 col-sm-12">
                             <TextField value={user.password} onChange={e => setUser({...user,password:e.target.value})} variant="outlined" margin="normal" required fullWidth name="password" label="Password" type={show_password?"text":"password"} id="password" autoComplete="current-password" error={Boolean(errors.password)} helperText={errors.password?.message}
                                 inputRef={register({required: "Password is Required",
@@ -137,8 +127,6 @@ export default function Register(){
                                 }}
                             /> 
                         </div>
-                    </div>
-                    <div className="row">
                         <div className="col-lg-6 col-md-6 col-sm-12">
                             <TextField value={user.confirm_password} onChange={e => setUser({...user,confirm_password:e.target.value})} variant="outlined" margin="normal" required fullWidth name="confirm_password" label="Confirm Password" type={show_password?"text":"password"} id="confirm_password" autoComplete="confirm_password" error={Boolean(errors.confirm_password)} helperText={errors.confirm_password?.message}
                                 inputRef={register({required: "Confirm Password is Required"})}
@@ -153,9 +141,21 @@ export default function Register(){
                                 }}
                             />
                         </div>
-                        <div className="col-lg-6 col-md-6 col-sm-12 justify-content-center d-flex align-items-center">   
-                            <span className="text-danger mt-2 d-block">{user.confirm_password ? user.password != user.confirm_password ? "Passwords Not Matching": "":""}</span>
+                    </div>
+                    <div className="row">
+                        <div className="col-lg-12 col-md-12 col-sm-12">
+                            <TextField id="email" variant="outlined" label="Email address" type="email" name="email" autoComplete="email" margin="normal" required fullWidth error={Boolean(errors.email)} helperText={errors.email?.message}
+                                inputRef={register({required: "Email Address is Required",
+                                    pattern: {
+                                        value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                                        message: 'Please Enter Valid Email Address',
+                                    }
+                                })}
+                            /> 
                         </div>
+                    </div>
+                    <div style={{margin: '0 auto', display: "flex"}} className="mb-1 justify-content-center">   
+                        <span className="text-danger mt-2 d-block">{user.confirm_password ? user.password != user.confirm_password ? "Passwords Not Matching": "":""}</span>
                     </div>
                     <div style={{margin: '0 auto', display: "flex"}} className="mb-1 justify-content-center">
                         <Button disabled={ user.password != user.confirm_password && user.confirm_password} type="submit" variant="contained" color="primary" className={classes.submit}>Sign Up</Button>
