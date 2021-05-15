@@ -20,6 +20,11 @@ import { Link, useHistory } from "react-router-dom";
 import {useForm} from "react-hook-form";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import axios from "axios";
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
+
+
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -53,11 +58,74 @@ export default function Register(){
         password: "",
         confirm_password: ""
     })
+    const [warning_msg, setWarningMessage] = useState("");
+    const [show_success, setSuccess] = useState(false);
+    const [show_warning, setWarning] = useState(false);
     const [show_password,setShowPassword] = useState(false)
     const handleClickShowPassword = () => setShowPassword(!show_password);
     const handleMouseDownPassword = () => setShowPassword(!show_password);
+    const handleClick = () => {
+        setSuccess(true);
+    };
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+        return;
+        }
+        setSuccess(false);
+        setWarning(false);
+    };
     const { register, handleSubmit, reset, errors } = useForm();
-    const onSubmit = (data, e) => {
+    const submitData = async (e) => {
+        try {
+            delete user['confirm_password']
+            const { data } = await axios({
+                method: 'post',
+                url: `http://localhost:5000/auth/users/register`,
+                data: user,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            handleClick()
+            setTimeout(() => {
+                resetForm()
+                handleClose()
+            }, 3000);
+            return data;
+        } catch (e) {
+            setWarningMessage(e.response.data.message)
+            setWarning(true);
+            setTimeout(() => {
+                handleClose()
+            }, 3000);
+            return console.log('Error')
+        }
+    }
+    const checkEmailValidity = async (e) => { 
+        try {
+            const {data} = await axios({
+                method: 'post',
+                url: `http://localhost:5000/auth/users/check_email`,
+                data: {email: user.email},
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            submitData()
+            return data;
+        } catch (e) {
+            if(e.response.status == 400){
+                setWarningMessage(e.response.data.message)
+                setWarning(true);
+                setTimeout(() => {
+                    handleClose()
+                }, 3000);
+            }
+            return console.log('Error')
+        }
+    }
+    const onSubmit = async () => {
+        checkEmailValidity()
     };
     const resetForm = () => {
         user.full_name = ""
@@ -83,7 +151,7 @@ export default function Register(){
                 <form className={classes.form} onSubmit={handleSubmit(onSubmit)} noValidate>
                     <div className="row">
                         <div className="col-lg-6 col-md-6 col-sm-12">
-                            <TextField variant="outlined" id="full_name" label="Full Name" type="text" name="full_name" autoComplete="full_name" margin="normal" required fullWidth error={Boolean(errors.full_name)} helperText={errors.full_name?.message}
+                            <TextField value={user.full_name} onChange={e => setUser({...user,full_name:e.target.value})} variant="outlined" id="full_name" label="Full Name" type="text" name="full_name" autoComplete="full_name" margin="normal" required fullWidth error={Boolean(errors.full_name)} helperText={errors.full_name?.message}
                                 inputRef={register({required: "Full Name is Required"})}
                             />   
                         </div>
@@ -144,7 +212,7 @@ export default function Register(){
                     </div>
                     <div className="row">
                         <div className="col-lg-12 col-md-12 col-sm-12">
-                            <TextField id="email" variant="outlined" label="Email address" type="email" name="email" autoComplete="email" margin="normal" required fullWidth error={Boolean(errors.email)} helperText={errors.email?.message}
+                            <TextField value={user.email} onChange={e => setUser({...user,email:e.target.value})} id="email" variant="outlined" label="Email address" type="email" name="email" autoComplete="email" margin="normal" required fullWidth error={Boolean(errors.email)} helperText={errors.email?.message}
                                 inputRef={register({required: "Email Address is Required",
                                     pattern: {
                                         value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
@@ -175,6 +243,16 @@ export default function Register(){
                     </Grid>   
                 </form>
             </div>
+            <Snackbar open={show_success} autoHideDuration={3000} onClose={handleClose}>
+                <Alert variant="filled" onClose={handleClose} severity="success">
+                    User Registered Successfully
+                </Alert>
+            </Snackbar>
+            <Snackbar open={show_warning} autoHideDuration={3000} onClose={handleClose}>
+                <Alert variant="filled" onClose={handleClose} severity="error">
+                    {warning_msg}
+                </Alert>
+            </Snackbar>
         </Container>
   );
 }

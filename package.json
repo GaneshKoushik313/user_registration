@@ -7,9 +7,11 @@
     "@hookform/resolvers": "^0.1.1",
     "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.58",
     "@testing-library/jest-dom": "^5.12.0",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
+    "axios": "^0.19.2",
     "bcrypt": "^4.0.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
@@ -17,6 +19,7 @@
     "express": "^4.17.1",
     "express-validator": "^6.4.0",
     "firebase": "^8.6.1",
+    "http-proxy-middleware": "^1.0.3",
     "jquery": "^3.6.0",
     "jsonwebtoken": "^8.5.1",
     "material-ui-phone-number": "^2.2.6",
@@ -49,7 +52,11 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "server": "nodemon server --prefix server",
+    "client": "npm start",
+    "server-build": "npm run build --prefix server",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "eslintConfig": {
     "extends": [
@@ -68,5 +75,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "concurrently": "^5.1.0",
+    "nodemon": "^2.0.2",
+    "redux-devtools-extension": "^2.13.8"
   }
 }
