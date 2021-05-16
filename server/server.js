@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const app = express();
@@ -9,12 +10,13 @@ const userRoute = require('./routes/api/auth');
 
 app.use(bodyParser.json());
 app.use(cors({origin: 'https://react-auth-3d77f.web.app'}));
+app.use(express.static(path.resolve(__dirname, '../build')));
 app.use('/auth',userRoute);
 
 //ROUTES
-app.get('/', (req,res) => {
-    res.send('Home');
-})
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
+});
 
 //Connect to DB
 mongoose.set('useCreateIndex', true);
