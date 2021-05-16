@@ -70,7 +70,7 @@ export default function Login(){
         try {
             const {data} = await axios({
                 method: 'post', //you can set what request you want to be
-                url: `http://localhost:5000/auth/users/login`,
+                url: `/auth/users/login`,
                 data: user,
                 headers: {
                     'Content-Type': 'application/json'

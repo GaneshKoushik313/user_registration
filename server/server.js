@@ -8,7 +8,7 @@ var cors = require('cors');
 const userRoute = require('./routes/api/auth');
 
 app.use(bodyParser.json());
-app.use(cors({origin: 'http://localhost:3000'}));
+app.use(cors({origin: 'https://react-auth-3d77f.web.app'}));
 app.use('/auth',userRoute);
 
 //ROUTES

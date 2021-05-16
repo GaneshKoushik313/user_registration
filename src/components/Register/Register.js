@@ -80,7 +80,7 @@ export default function Register(){
             delete user['confirm_password']
             const { data } = await axios({
                 method: 'post',
-                url: `http://localhost:5000/auth/users/register`,
+                url: `/auth/users/register`,
                 data: user,
                 headers: {
                     'Content-Type': 'application/json'
@@ -105,7 +105,7 @@ export default function Register(){
         try {
             const {data} = await axios({
                 method: 'post',
-                url: `http://localhost:5000/auth/users/check_email`,
+                url: `/auth/users/check_email`,
                 data: {email: user.email},
                 headers: {
                     'Content-Type': 'application/json'
