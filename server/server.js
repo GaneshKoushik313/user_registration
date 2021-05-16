@@ -27,6 +27,5 @@ mongoose.connect(process.env.DB_CONNECTION, {useNewUrlParser: true, useUnifiedTo
     console.log('Connected to DB')
 );
 
-exports.app = functions.https.onRequest(app);
 //Listen Server
 app.listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`));
