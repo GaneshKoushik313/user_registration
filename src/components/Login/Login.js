@@ -81,7 +81,14 @@ export default function Login(){
             // history.push("/");
             return data;
         } catch (e) {
-            setWarningMessage(e.response.data.errors[0].msg)
+            let msg = ""
+            if(e.response.data.hasOwnProperty('errors')){
+                msg = e.response.data.errors[0].msg
+            }
+            else{
+                msg = e.response.data.message
+            }
+            setWarningMessage(msg)
             setWarning(true);
             setTimeout(() => {
                 handleClose()
@@ -91,7 +98,6 @@ export default function Login(){
     };
 
     useEffect( () =>{
-        console.log("Load")
     })
    
     return (
