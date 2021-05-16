@@ -10,12 +10,12 @@ const userRoute = require('./routes/api/auth');
 
 app.use(bodyParser.json());
 app.use(cors({origin: 'https://react-auth-3d77f.web.app'}));
-app.use(express.static(path.resolve(__dirname, './build')));
+app.use(express.static(path.resolve(__dirname, '/build')));
 app.use('/auth',userRoute);
 
 //ROUTES
 app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname, './build', 'index.html'));
+    res.sendFile(path.join(__dirname, '/build', 'index.html'));
 });
 
 //Connect to DB
