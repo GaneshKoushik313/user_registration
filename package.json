@@ -81,5 +81,6 @@
     "concurrently": "^5.1.0",
     "nodemon": "^2.0.2",
     "redux-devtools-extension": "^2.13.8"
-  }
+  },
+  "homepage": "/"
 }
